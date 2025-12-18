@@ -288,6 +288,26 @@ final class ModelCatalog extends AbstractModelCatalog
                     Capability::OUTPUT_TEXT,
                 ],
             ],
+            'global.anthropic.claude-opus-4-5-20251101' => [
+                'class' => Claude::class,
+                'capabilities' => [
+                    Capability::INPUT_MESSAGES,
+                    Capability::INPUT_IMAGE,
+                    Capability::OUTPUT_TEXT,
+                    Capability::OUTPUT_STREAMING,
+                    Capability::TOOL_CALLING,
+                ],
+            ],
+            'claude-sonnet-4-5-20250929' => [
+                'class' => Claude::class,
+                'capabilities' => [
+                    Capability::INPUT_MESSAGES,
+                    Capability::INPUT_IMAGE,
+                    Capability::OUTPUT_TEXT,
+                    Capability::OUTPUT_STREAMING,
+                    Capability::TOOL_CALLING,
+                ],
+            ],
         ];
 
         $this->models = array_merge($defaultModels, $additionalModels);
