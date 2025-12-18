@@ -96,14 +96,14 @@ class File implements ContentInterface
     }
 
     /**
-     * @return array{type: string, url: string|null, name: string|null}
+     * @return array{data: string, path: string|null, format: string|null}
      */
     public function __serialize(): array
     {
         return [
-            'type' => 'file',
-            'url' => $this->asDataUrl(),
-            'name' => $this->getFilename(),
+            'data' => $this->data instanceof \Closure ? ($this->data)() : $this->data,
+            'format' => $this->format,
+            'path' => $this->path,
         ];
     }
 }
