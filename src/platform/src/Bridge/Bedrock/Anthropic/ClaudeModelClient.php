@@ -60,31 +60,6 @@ final class ClaudeModelClient implements ModelClientInterface
         return new RawBedrockResult($this->bedrockRuntimeClient->invokeModel(new InvokeModelRequest($request)));
     }
 
-    public function convert(InvokeModelResponse $bedrockResponse): ToolCallResult|TextResult
-    {
-        $data = json_decode($bedrockResponse->getBody(), true, 512, \JSON_THROW_ON_ERROR);
-
-        if (!isset($data['content']) || [] === $data['content']) {
-            throw new RuntimeException('Response does not contain any content.');
-        }
-
-        if (!isset($data['content'][0]['text']) && !isset($data['content'][0]['type'])) {
-            throw new RuntimeException('Response content does not contain any text or type.');
-        }
-
-        $toolCalls = [];
-        foreach ($data['content'] as $content) {
-            if ('tool_use' === $content['type']) {
-                $toolCalls[] = new ToolCall($content['id'], $content['name'], $content['input']);
-            }
-        }
-        if ([] !== $toolCalls) {
-            return new ToolCallResult(...$toolCalls);
-        }
-
-        return new TextResult($data['content'][0]['text']);
-    }
-
     private function getModelId(Model $model): string
     {
         $configuredRegion = $this->bedrockRuntimeClient->getConfiguration()->get('region');
